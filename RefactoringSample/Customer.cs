@@ -38,25 +38,7 @@ namespace RefactoringSample
                 double thisAmount = 0;
                 Rental each = (Rental)rentals.Current; // 取得一筆租借記錄
 
-                //determine amounts for each line
-                switch (each.getMovie().getPriceCode())
-                {   // 取得影片出租價格
-                    case Movie.REGULAR:                     // 普通片
-                        thisAmount += 2;
-                        if (each.getDaysRented() > 2)
-                            thisAmount += (each.getDaysRented() - 2) * 1.5;
-                        break;
-
-                    case Movie.NEW_RELEASE:         // 新片
-                        thisAmount += each.getDaysRented() * 3;
-                        break;
-
-                    case Movie.CHILDRENS:           // 兒童片
-                        thisAmount += 1.5;
-                        if (each.getDaysRented() > 3)
-                            thisAmount += (each.getDaysRented() - 3) * 1.5;
-                        break;
-                }
+                thisAmount = amountFor(each);        // 計算一筆租片費用                
 
                 // add frequent renter points（累加 常客積點）
                 frequentRenterPoints++;
@@ -76,6 +58,28 @@ namespace RefactoringSample
             result += "Amount owed is " + totalAmount.ToString() + "\n";
             result += "You earned " + frequentRenterPoints.ToString() +
                     " frequent renter points";
+            return result;
+        }
+
+        private double amountFor(Rental aRental)
+        {    // 計算一筆租片費用
+            double result = 0;
+            switch (aRental.getMovie().getPriceCode())
+            {
+                case Movie.REGULAR:           // 普通片
+                    result += 2;
+                    if (aRental.getDaysRented() > 2)
+                        result += (aRental.getDaysRented() - 2) * 1.5;
+                    break;
+                case Movie.NEW_RELEASE:               // 新片
+                    result += aRental.getDaysRented() * 3;
+                    break;
+                case Movie.CHILDRENS:         // 兒童片
+                    result += 1.5;
+                    if (aRental.getDaysRented() > 3)
+                        result += (aRental.getDaysRented() - 3) * 1.5;
+                    break;
+            }
             return result;
         }
     }
