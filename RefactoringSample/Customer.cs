@@ -38,7 +38,7 @@ namespace RefactoringSample
                 double thisAmount = 0;
                 Rental each = (Rental)rentals.Current; // 取得一筆租借記錄
 
-                thisAmount = amountFor(each);        // 計算一筆租片費用                
+                thisAmount = each.getCharge();   // 計算一筆租片費用                
 
                 // add frequent renter points（累加 常客積點）
                 frequentRenterPoints++;
@@ -59,28 +59,6 @@ namespace RefactoringSample
             result += "You earned " + frequentRenterPoints.ToString() +
                     " frequent renter points";
             return result;
-        }
-
-        private double amountFor(Rental aRental)
-        {    // 計算一筆租片費用
-            double result = 0;
-            switch (aRental.getMovie().getPriceCode())
-            {
-                case Movie.REGULAR:           // 普通片
-                    result += 2;
-                    if (aRental.getDaysRented() > 2)
-                        result += (aRental.getDaysRented() - 2) * 1.5;
-                    break;
-                case Movie.NEW_RELEASE:               // 新片
-                    result += aRental.getDaysRented() * 3;
-                    break;
-                case Movie.CHILDRENS:         // 兒童片
-                    result += 1.5;
-                    if (aRental.getDaysRented() > 3)
-                        result += (aRental.getDaysRented() - 3) * 1.5;
-                    break;
-            }
-            return result;
-        }
+        }     
     }
 }
